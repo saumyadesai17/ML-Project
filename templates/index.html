@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Website Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('phishing_background.jpg'); /* Replace 'phishing_background.jpg' with your image path */
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        form {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            width: 60%; /* Adjusted width */
+            box-sizing: border-box;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: calc(100% - 16px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+            box-sizing: border-box;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        button[type="button"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
+        button[type="button"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        function analyzeUrl() {
+            var url = document.getElementById('url').value;
+            fetch('/analyze-url?url=' + encodeURIComponent(url))
+                .then(response => response.json())
+                .then(data => {
+                    // Fill input fields with analyzed data
+                    document.getElementById('url_length').value = data.url_length;
+                    document.getElementById('n_dots').value = data.n_dots;
+                    document.getElementById('n_hypens').value = data.n_hypens;
+                    document.getElementById('n_underline').value = data.n_underline;
+                    document.getElementById('n_slash').value = data.n_slash;
+                    document.getElementById('n_questionmark').value = data.n_questionmark;
+                    document.getElementById('n_at').value = data.n_at;
+                    document.getElementById('n_and').value = data.n_and;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+    <form action="/predict" method="post" id="predictionForm">
+        <h2>Enter URL Characteristics:</h2>
+        <label for="url">URL:</label>
+        <input type="text" id="url" required><br>
+        <button type="button" onclick="analyzeUrl()">Analyze URL</button><br><br>
+
+        <label for="url_length">URL Length:</label>
+        <input type="text" id="url_length" name="url_length" required><br>
+
+        <label for="n_dots">Number of Dots:</label>
+        <input type="text" id="n_dots" name="n_dots" required><br>
+
+        <label for="n_hypens">Number of Hyphens:</label>
+        <input type="text" id="n_hypens" name="n_hypens" required><br>
+
+        <label for="n_underline">Number of Underscores:</label>
+        <input type="text" id="n_underline" name="n_underline" required><br>
+
+        <label for="n_slash">Number of Slashes:</label>
+        <input type="text" id="n_slash" name="n_slash" required><br>
+
+        <label for="n_questionmark">Number of Question Marks:</label>
+        <input type="text" id="n_questionmark" name="n_questionmark" required><br>
+
+        <label for="n_at">Number of At Symbols:</label>
+        <input type="text" id="n_at" name="n_at" required><br>
+
+        <label for="n_and">Number of Ampersands:</label>
+        <input type="text" id="n_and" name="n_and" required><br>
+
+        <input type="submit" value="Predict">
+    </form>
+</body>
+</html>
